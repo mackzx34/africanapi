@@ -1,0 +1,18 @@
+# Use official PHP image with Apache
+FROM php:7.4-apache
+
+# Set working directory within the container
+WORKDIR /var/www/html
+
+# Copy composer.json and run composer install
+COPY composer.json .
+RUN composer install --prefer-dist
+
+# Copy your application code from the Git repository (replace URL with actual repo)
+COPY --from=https://github.com/mackzx34/africanapi.git . src
+
+# Expose port 80 for web traffic
+EXPOSE 80
+
+# Start Apache in the foreground
+CMD ["apache2", "-f", "/etc/apache2/apache2.conf"]
